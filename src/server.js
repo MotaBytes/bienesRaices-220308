@@ -31,8 +31,10 @@ app.listen(port, (request, response) => {
     console.log(`El servidor web ha sido iniciado y está esperando solicitudes (request) \n Actualmente se encuentra escuchando a través del puerto ${port}`)})
 
 try {
-    bd.authenticate();
-    console.log("La conexión a la base de datos ha sido exitosa");
+    await bd.authenticate();
+    console.log("La conexion a la base de datos ha sido exitosa");
+    bd.sync();
+    console.log("Se ha sincronizado las tablas existentes en la base de datos")
 } catch (error) {
     console.log('Hubo un error al intentar conectarme a la base de datos');
     console.log(error);
