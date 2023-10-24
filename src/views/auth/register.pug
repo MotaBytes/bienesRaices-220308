@@ -9,7 +9,7 @@ block content
         if errors 
             div(class="max-w-md mx-auto my-10")
                 each error in errors 
-                    p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
+                    p.bg-morEva.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
         .mt-8.mx-auto.max-w-xl 
             .bg-white.py-8.px-4.shadow-xl.rounded-lg 
                 form.space-y-5(action="/login/register" method="POST" noValidate)

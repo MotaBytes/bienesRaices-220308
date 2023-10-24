@@ -7,7 +7,9 @@ export default {
       rojoS: '#591925',
       eva: '#8697A6',
       graay: '#8C817D',
-      grayP: '#262626'
+      grayP: '#262626',
+      morEva: '#965fd4',
+      verEva: '#3f6d4e'
     }},
   },
   plugins: [],

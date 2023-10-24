@@ -1,5 +1,7 @@
 import user from "../modells/user.js";
 import { check, validationResult } from "express-validator";
+import {generateToken} from '../lib/tokens.js'
+import { request } from "express";
 
 const formLogin = (req, res) => {
     res.render("auth/login.pug", { //Controladore
@@ -13,7 +15,7 @@ const formRegister = (req, res) => {
     })
 }
 
-const recovery = (rq, res) => {
+const recovery = (req, res) => {
     res.render("auth/recovery.pug", {
         page: "Recovery your password"
     })
@@ -35,11 +37,18 @@ const insertUser = async (req, res) => {
     
     console.log(`El total de errores fueron de: ${validationResult.length} errores de validación`)
     let resultValidate = validationResult(req);
+    
+
+    //console.log(userExists);
+
+    const {name, email, password} = req.body
+
     const userExists = await user.findOne({
         where: {
             email: req.body.email
         }
     });
+
     if (userExists){
         res.render("auth/register.pug", ({
             page: "Creating a new account...",
@@ -52,8 +61,17 @@ const insertUser = async (req, res) => {
         }))
     }
      else if (resultValidate.isEmpty() ) {
-        let newUser = await user.create(req.body);
-        res.send('New user created...') //* Esta linea es la que inserta
+        const token = generateToken()
+        let newUser = await user.create({
+            name: name,
+            email: email,
+            password: password,
+            token: token
+        });
+        res.render('templates/message.pug', {
+            page: "New account created",
+            message: `We have sent an email to: ${email}, please verify your account`
+        }) //* Esta linea es la que inserta
     }
     else {
         res.render("auth/register.pug", ({
