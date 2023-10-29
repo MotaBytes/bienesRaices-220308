@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { request, response } from 'express'
 
 const router = express.Router();
 
@@ -24,7 +24,7 @@ router.put('/', (rq, rp) => rp.send("You trying to update some properties of dat
 router.patch('/', (rq, rp) => rp.send("Hi, you try to update all data object through PATCH"))
 
 //* A TRAVÉS DE DELETE
-router.delete('/', (rq, rp) => rp.send("Are you sure that you eant to DELETE Data?"))
+router.delete('/', (rq, rp) => rp.send("Are you sure that you want to DELETE Data?"))
 
 
 

@@ -1,27 +1,37 @@
 //Common JS
 //NO SE PUEDE TENER ECMS Y COMMON AL MISMO TIEMPO
-//TODO importando la librería de express para activar la comunicación vía protocolo HTTP 
+// importando la librería de express para activar la comunicación vía protocolo HTTP 
 //const express = require('express');
 import express, { urlencoded } from 'express'   //*Para evitar error en el type en el package.json   ESTO ES ECMS6
 import generalRoutes from './routes/generalRoutes.js';     //*Importamos el archivo de las rutas generales
 import userRoutes from './routes/userRoutes.js';
 import bd from './config/db.js';
 import user from './modells/user.js';
+import csrf from 'csurf';
+import cookieParser from 'cookie-parser';   
 
-//TODO Instanciamos el módulo express de la libreria para definir el servidor que aenderá las peticiones
+//! Instanciamos el módulo express de la libreria para definir el servidor que aenderá las peticiones
 const app = express();
 app.use(express.urlencoded({
     extended:false 
 }));
+
+
+// HABILITAR COOKIEPARSER PARA LEER, ESCRIBIR Y ELIMINAR EN LAS COOKIES DEL NAVEGADOR.
+
+app.use(cookieParser());
+
+//Habilitar CSRF PROTECTION
+
+app.use(csrf( { cookie:true }));
+
+
 
 app.set('view engine', 'pug')
 app.set('views', './src/views')
 app.use(express.static('./src/public'))
 const port = 3000;   //*64400 puertos mtb 1024-SO
 
-//! AGREGAR Y CONFIGURAR EL TEMPLATE ENGINE
-app.set('view engine', 'pug')
-app.set('views', './src/views')
 /*
 app.listen(port)    
 */

@@ -3,9 +3,9 @@ import dotenv from 'dotenv';
 dotenv.config({path:'src/.env'});
 
 //configuración de sequelize
-const bd = new sequelize(process.env.BD_NAME, process.env.BD_USER, process.env.BD_PASSWORD, {
-    host : process.env.BD_HOST,
-    port: 3309,
+const bd = new sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host : process.env.DB_HOST,
+    port: process.env.DB_PORT,
     dialect: 'mysql',
     define:{
         timestamps:true
