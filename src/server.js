@@ -7,8 +7,9 @@ import generalRoutes from './routes/generalRoutes.js';     //*Importamos el arch
 import userRoutes from './routes/userRoutes.js';
 import bd from './config/db.js';
 import user from './modells/user.js';
-import csrf from 'csurf';
-import cookieParser from 'cookie-parser';   
+import helmet from 'helmet';  
+import dotenv from 'dotenv' 
+dotenv.config({path:'src/.env'});
 
 //! Instanciamos el módulo express de la libreria para definir el servidor que aenderá las peticiones
 const app = express();
@@ -17,28 +18,16 @@ app.use(express.urlencoded({
 }));
 
 
-// HABILITAR COOKIEPARSER PARA LEER, ESCRIBIR Y ELIMINAR EN LAS COOKIES DEL NAVEGADOR.
-
-app.use(cookieParser());
-
-//Habilitar CSRF PROTECTION
-
-app.use(csrf( { cookie:true }));
-
-
-
 app.set('view engine', 'pug')
 app.set('views', './src/views')
 app.use(express.static('./src/public'))
-const port = 3000;   //*64400 puertos mtb 1024-SO
+   //*64400 puertos mtb 1024-SO
+app.use(helmet())
 
-/*
-app.listen(port)    
-*/
 
-app.listen(port, (request, response) => {
+app.listen(process.env.SERVER_PORT, (request, response) => {
     //*Le indicamos a la instancia de express que comience a escuchar las peticiones 
-    console.log(`El servidor web ha sido iniciado y está esperando solicitudes (request) \n Actualmente se encuentra escuchando a través del puerto ${port}`)})
+    console.log(`El servidor web ha sido iniciado y está esperando solicitudes (request) \n Actualmente se encuentra escuchando a través del puerto locote`)})
 
 try {
     await bd.authenticate();

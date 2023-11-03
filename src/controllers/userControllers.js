@@ -1,27 +1,33 @@
 import user from "../modells/user.js";
 import {check, validationResult} from "express-validator";
 import {generateToken} from '../lib/tokens.js'
-import {emailRegister} from '../lib/emails.js'
+import {emailRegister, emailPasswordRecovery} from '../lib/emails.js'
 
 const formLogin = (req, res) => {
     res.render("auth/login.pug", {
         isLogged: false,
-        page: "Login",
-        csrfToken:req.csrfToken()
+        page: "Login"
+    })
+}
+
+const formPasswordUpdate = (request, response) => {
+    
+    response.render("../views/auth/password-update.pug", {
+        isLogged: false,
+        page: "Password update",
+        
     })
 }
 
 const formRegister = (req, res) => {
     res.render("auth/register.pug", {
-        page: "Creating a new account...",
-        csrfToken:req.csrfToken()
+        page: "Creating a new account..."
     })
 }
 
 const recovery = (req, res) => {
     res.render("auth/recovery.pug", {
-        page: "Password Recovery",
-        csrfToken:req.csrfToken()
+        page: "Password Recovery"
     })
 }
 
@@ -57,8 +63,7 @@ const insertUser = async (req, res) => {
             user:{
                 name: req.body.name,
                 email: req.body.email
-            },
-            csrfToken:req.csrfToken()
+            }
             
         }))
     }
@@ -74,10 +79,10 @@ const insertUser = async (req, res) => {
         res.render('templates/message.pug', {
             page: "New account created",
             message: `We have sent an email to: ${email}, please verify your account`,
-            csrfToken:req.csrfToken()
+            type: "success"
         })
 
-        //TODO: HACER QUE SE EJECUTE LA FUNCIÓN
+        
         emailRegister({
             name,
             email,
@@ -90,8 +95,7 @@ const insertUser = async (req, res) => {
             errors: resultValidate.array(), user: {
                 name: req.body.name,
                 email: req.body.email
-            },
-            csrfToken:req.csrfToken()
+            }
         }))
     }
 
@@ -100,7 +104,6 @@ const insertUser = async (req, res) => {
 }
 
 const confirmAccount= async (req, res) => {
-    //TODO: Verificar token
 
     const tokenReceived = req.params.token;
     const userOwner = await user.findOne({
@@ -115,11 +118,11 @@ const confirmAccount= async (req, res) => {
             page: 'Status verification.',
             error: true,
             msg: 'We have found some issues and could not verify your account.',
-            csrfToken:req.csrfToken()
+            button: 'Access denied' 
         })
     } else {
         console.log("existe");
-        userOwner.token = '';
+        userOwner.token = null;
         userOwner.verified = true;
         await userOwner.save();
         // ESTA OPERACION REALIZA EL UPDATE EN LA BASE DE DATOS.
@@ -127,13 +130,78 @@ const confirmAccount= async (req, res) => {
             page: 'Status verification.',
             error: false,
             msg: 'Your account has been confirmed successfuly.',
-            csrfToken:req.csrfToken()
+            button: 'Now you can login'
         });
     }
 
     
 }
 
+const updatePassword = (req, res) => {
+    return 0;
+}
 
-export {formLogin, formRegister, recovery, insertUser, confirmAccount}
+const emailChangePassword = async (req, res) => {
+    console.log(`El usuario ha solicitado un cambio de contraseña, por lo que se le enviará un correo electrónico a ${req.body.email} con la liga para atualización de contraseña`);
+
+    await check("email").notEmpty().withMessage("YOUR EMAIL IS REQUIRED").isEmail().withMessage("THIS ISN'T EMAIL FORMAT").run(req);
+
+    let resultValidate = validationResult(req);
+    const {name, email} = req.body
+
+    if(resultValidate.isEmpty()) {
+        const userExists = await user.findOne({
+            where: {
+                email: req.body.email
+            }
+        });
+
+        if (!userExists){
+            console.log(`El usuario ${email} que está intentando recuperar su contraseña no existe`);
+            res.render("templates/message.pug", {
+                page: "User not found",
+                message: `The user associate with ${email} doesn´t exist in database`,
+                type: "error"
+            })
+        } 
+        else {
+            console.log("Envio de correo");
+            const token = generateToken();
+            userExists.token = token;
+            userExists.save();
+
+            //TODO: enviar el correo con el nuevo token
+            emailPasswordRecovery({
+                name:userExists.name,
+                email:userExists.email,
+                token:userExists.token
+            })
+
+            res.render('templates/message.pug', {
+                page: 'Email send',
+                msg: `We have sent an email to account ${email}`,
+                type: 'success'
+            })
+
+        }
+    } 
+    else {
+        res.render("auth/recovery", ({
+            page: "Status verification",
+            error: false,
+            msg: 'Your account has been confirmed successfuly',
+            button: 'Now you can login',
+            errors: resultValidate.array(), user: {
+                name: req.body.name,
+                email: req.body.email
+            },
+        }))
+    }
+
+    
+
+    return 0;
+}
+
+export {formLogin, formRegister, recovery, insertUser, confirmAccount, emailChangePassword, updatePassword, formPasswordUpdate }
 //TODO: INCORPORAR LOS TOKENS CSRF EN VISTAS
