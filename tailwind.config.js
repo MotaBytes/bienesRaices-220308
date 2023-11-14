@@ -9,7 +9,8 @@ export default {
       graay: '#8C817D',
       grayP: '#262626',
       morEva: '#965fd4',
-      verEva: '#3f6d4e'
+      verEva: '#3f6d4e',
+      background: '#919090'
     }},
   },
   plugins: [],

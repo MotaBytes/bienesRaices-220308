@@ -1,6 +1,7 @@
 import {DataTypes} from 'sequelize'
 import db from '../config/db.js'
-import bcrypt from 'bcrypt'
+
+import bcrypt from 'bcrypt';
     
 
 //* Modelo de la tabla usuarios
@@ -23,21 +24,28 @@ const user = db.define('tbb_users', {
 
     token: {
         type:DataTypes.STRING,
-        defaultValue:null,
-        unique: true
+        unique:true,
+        defaultValue:""
     },
     verified: {
-        type:DataTypes.BOOLEAN,
+        type: DataTypes.BOOLEAN,
         defaultValue:false
 }
-
-}, {
-    hooks: {beforeCreate: async(user) => {
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(user.password, salt)
-
-    }}
+    
+},{
+    hooks:{
+        beforeCreate: async (user) =>{
+            const salt = await bcrypt.genSalt(10);
+            user.password=await bcrypt.hash(user.password,salt);
+        }
+    }
 });
 
+user.prototype.verifyPassword = function(password){
+    return bcrypt.compareSync(password, this.password);
+}
 
-export default user;
+
+
+
+export default user;            

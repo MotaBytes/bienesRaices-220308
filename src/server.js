@@ -2,14 +2,16 @@
 //NO SE PUEDE TENER ECMS Y COMMON AL MISMO TIEMPO
 // importando la librería de express para activar la comunicación vía protocolo HTTP 
 //const express = require('express');
-import express, { urlencoded } from 'express'   //*Para evitar error en el type en el package.json   ESTO ES ECMS6
-import generalRoutes from './routes/generalRoutes.js';     //*Importamos el archivo de las rutas generales
+import express, { urlencoded } from 'express';
+import generalRoutes from './routes/generalRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import propertyRoutes from './routes/propertyRoutes.js'
 import bd from './config/db.js';
-import user from './modells/user.js';
-import helmet from 'helmet';  
-import dotenv from 'dotenv' 
-dotenv.config({path:'src/.env'});
+import User from './modells/user.js';
+import helmet from 'helmet'; 
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+dotenv.config({path:'src/.env'})
 
 //! Instanciamos el módulo express de la libreria para definir el servidor que aenderá las peticiones
 const app = express();
@@ -17,11 +19,15 @@ app.use(express.urlencoded({
     extended:false 
 }));
 
+//! HABILITAR COOKIEPARSER PARA LEER, ESCRIBIR Y ELIMINAR EN LAS COOKIES DEL NAVEGADOR.
+app.use(cookieParser({
+    cookie:true
+}))
+
 
 app.set('view engine', 'pug')
 app.set('views', './src/views')
 app.use(express.static('./src/public'))
-   //*64400 puertos mtb 1024-SO
 app.use(helmet())
 
 
@@ -39,9 +45,9 @@ try {
     console.log(error);
 }
 
-app.use('/', generalRoutes)
 app.use('/login', userRoutes)
+app.use('/properties', propertyRoutes) 
 
 
 
-//!QUEDA PENDIENTE RESPONSE.RENDER() -> QUE PINTA UNA INTERFAZ GRÁFICA A TRAVÉS DE UN MOTOR DE PLANTILLAS (TEMPLATE ENGINE)
+

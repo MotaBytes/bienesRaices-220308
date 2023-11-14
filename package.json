@@ -31,9 +31,11 @@
   "homepage": "https://github.com/Motor69/bienesRaices-220308#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "express-validator": "^7.0.1",
     "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "mysql2": "^3.6.2",
     "nodemailer": "^6.9.7",

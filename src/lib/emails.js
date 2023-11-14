@@ -271,7 +271,7 @@ const emailPasswordRecovery = async (userData) => {
           <div class="signature" align="denter">
             <p>Diego Hernández Mota
             </p>
-            <img src="https://tinypic.host/images/2023/10/31/Text_Signature.png" alt="Firma" style="display: block; margin: 20px 0; width: 200px; height: auto;">
+            <img src="#" alt="Firma" style="display: block; margin: 20px 0; width: 200px; height: auto;">
   
             <p>CEO of RealState-220308</p>
           </div>

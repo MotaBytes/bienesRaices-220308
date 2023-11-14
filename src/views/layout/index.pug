@@ -6,6 +6,9 @@ html(lang='en')
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title  Real State - 220308
         link(rel="stylesheet", href="/css/app.css")
-    body.min-h-screen.bg-eva
-        main(class="mx-auto container mt-10 px-2")
-        block content
+        script(src="/js/setTime.js") 
+    body.min-h-screen.bg-background
+        if showHeader
+            include navbar
+        main(class="mx-auto container mrt-10 px2")
+            block content

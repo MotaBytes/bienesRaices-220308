@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 //*RUTAS A TRAVÉS DE GET
-//TODO: Routing - Contando las peticiones que se reciben por medio de un endpoint (URL)
+//T Routing - Contando las peticiones que se reciben por medio de un endpoint (URL)
 // endpoint: punto final que te va a retornar un conjunto de datos (No es lo mismo que URL)
 //! DESCOMENTAR SI PIDE REVISAR SIGUIENTE CLASE 05-10-23    router.get('/', (request, response)=> response.send("Hola Web"))
 router.get('/', (rq, rp)=> rp.render("layout/index.pug"))
