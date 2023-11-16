@@ -5,4 +5,13 @@ const formProperty = (req, res) => {
     });
 }
 
-export { formProperty }
+//*ESTO ES EL INTENTO VAGO DEL RETO
+const viewProfile = (req, res) => {
+    res.send('Hola, soy tu perfil')
+}
+
+const seeProperties = (req, res) => {
+    res.send('Soy tus propiedades')
+}
+
+export { formProperty, viewProfile, seeProperties }

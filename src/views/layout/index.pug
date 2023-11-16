@@ -1,14 +1,15 @@
 doctype html
-html(lang='en')
-    head    
-        meta(charset='utf-8')
-        meta(http-equiv="X-UA-Compatible", content="IE_edge")
+html(lang="en")
+    head
+        meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title  Real State - 220308
+        title Real State &lt; 22308 &gt; | #{page}
         link(rel="stylesheet", href="/css/app.css")
+        block styles 
         script(src="/js/setTime.js") 
-    body.min-h-screen.bg-background
+    body.mint-h-screen.bg-background
         if showHeader
             include navbar
         main(class="mx-auto container mrt-10 px2")
             block content
+        block scripts
