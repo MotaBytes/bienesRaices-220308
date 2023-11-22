@@ -7,10 +7,11 @@ import generalRoutes from './routes/generalRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import propertyRoutes from './routes/propertyRoutes.js'
 import bd from './config/db.js';
-import user from './modells/user.js';
+import { user, Property } from './modells/relationships.js';
 import helmet from 'helmet'; 
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
 dotenv.config({path:'src/.env'})
 
 //! Instanciamos el módulo express de la libreria para definir el servidor que aenderá las peticiones
@@ -63,7 +64,7 @@ try {
 }
 
 app.use('/login', userRoutes)
-app.use('/properties', propertyRoutes) 
+app.use('/properties', propertyRoutes)
 /*
 script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js") LE DA FUNCIÓN AL MAPA
     script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js") INV ESRI, 

@@ -10,7 +10,6 @@
     "server": "nodemon src/server.js",
     "css": "postcss src/public/css/tailwind.css -o src/public/css/app.css --watch",
     "js": "webpack --watch"
-
   },
   "repository": {
     "type": "git",
@@ -43,7 +42,8 @@
     "nodemailer": "^6.9.7",
     "pug": "^3.0.2",
     "sequelize": "^6.33.0",
-    "toposort-class": "^1.0.1"
+    "toposort-class": "^1.0.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
