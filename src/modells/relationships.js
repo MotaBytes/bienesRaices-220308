@@ -4,15 +4,15 @@ import Category  from './category.js';
 import Price from './price.js';
 
 Property.belongsTo(user,{
-    foreigKey: 'user_ID'
+    foreignKey: 'user_ID'
 }) //FOREIGN KEY
 
 Price.hasOne(Property, {
-    foreigKey: 'price_ID'
+    foreignKey: 'price_ID'
 })
 
 Category.hasOne(Property, {
-    foreigKey: 'category_ID'
+    foreignKey: 'category_ID'
 })
 
 

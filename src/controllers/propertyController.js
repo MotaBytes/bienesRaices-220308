@@ -37,8 +37,38 @@ const saveNewProperty = async (req, res) => {
 
     console.log(`lat: ${req.body.lat}, long: ${req.body.lng}`)
 
+    // let data = req.body
+    // console.log(data);
+    let resultValidate = validationResult(req);
+    console.log(`lat: ${req.body.lat}, long: ${req.body.lng}`)
     let data = req.body
     console.log(data);
+     
+    const {title, description, category, priceRange, nRooms, nwc, parkingLot, street, lat, lng} =req.body;
+
+    if(resultValidate.isEmpty()){
+        //Creamos
+        const savedProperty = await Property.create({
+            title, description, category, priceRange, rooms:nRooms,wc:nwc, parkinglot:parkingLot, street, lat, lng, price_ID:priceRange, category_ID:category
+        })
+        res.send("Todo bien")
+    }
+    else{
+        const [categories, prices] = await Promise.all([Category.findAll(), Price.findAll()])
+        res.render('properties/create.pug', {
+            page: 'New property',
+            showHeader: true,
+            categories,
+            prices,
+            data:req.body,
+            errors: resultValidate.array(), 
+            propertyData: {
+                title, description, category, priceRange, nRooms, nwc, parkingLot, street, lat, lng
+            },
+    
+        });
+    
+    }
 }
 
 export { formProperty, saveNewProperty }

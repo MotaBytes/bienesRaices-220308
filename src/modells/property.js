@@ -32,20 +32,21 @@ const Property = db.define('tbb_properties', {
         allowNule: false
     },
     street:{
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(150),
         allowNule: false
     },
     lat:{
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(150),
         allowNule: false
     },
     long:{
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(150),
         allowNule: false
     },
     image:{
-        type: DataTypes.STRING,
-        allowNule: false
+        type: DataTypes.STRING(150),
+        allowNule: false,
+        defaultValue: "Por definir"
     },
     published:{
         type: DataTypes.BOOLEAN,
@@ -55,3 +56,5 @@ const Property = db.define('tbb_properties', {
 })
 
 export default Property
+
+

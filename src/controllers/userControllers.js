@@ -301,7 +301,8 @@ const authenticateUser = async(request,response ) =>{
 
 const userHome = (req, res) => {
     res.render('user/home',{
-        showHeader:true
+        showHeader:true,
+        page: "Home"
     })
 }
 
