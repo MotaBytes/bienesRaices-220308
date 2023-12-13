@@ -1,6 +1,7 @@
 // import Property from '../modells/property.js';
 import Price from '../modells/price.js';
 import Category from '../modells/category.js';
+import Property from '../modells/property.js'
 import { check, validationResult } from "express-validator";
 
 const formProperty = async(req, res) => {
@@ -33,9 +34,13 @@ const saveNewProperty = async (req, res) => {
 
     await check("nwc").isInt({min:0, max:5}).withMessage("The number of wc is unknown").run(req)
 
-    await check("street").isInt({min:0, max:5}).withMessage("The number of parking lots is unknown").run(req)
+    await check("parkingLot").isInt({min:0, max:5}).withMessage("The number of parking lot is unknow").run(req)
 
-    console.log(`lat: ${req.body.lat}, long: ${req.body.lng}`)
+    await check("street").notEmpty().withMessage("The name of the street is unknow").run(req)
+
+    await check("lat").isFloat({min:-90,max:90}).withMessage("the latitude is not in the requested range").run(req)
+
+    await check("lng").isFloat({min:-180, max: 180}).withMessage("The length is not within the requested range.").run(req)
 
     // let data = req.body
     // console.log(data);
@@ -45,13 +50,15 @@ const saveNewProperty = async (req, res) => {
     console.log(data);
      
     const {title, description, category, priceRange, nRooms, nwc, parkingLot, street, lat, lng} =req.body;
+    console.log(`El usuario logeado es el: ${req.user.id}`)
 
     if(resultValidate.isEmpty()){
         //Creamos
         const savedProperty = await Property.create({
-            title, description, category, priceRange, rooms:nRooms,wc:nwc, parkinglot:parkingLot, street, lat, lng, price_ID:priceRange, category_ID:category
+            title, description, category, priceRange, rooms:nRooms,wc:nwc, parkinglot:parkingLot, street, lat, lng, price_ID:priceRange, category_ID:category, user_ID: req.user.id
         })
-        res.send("Todo bien")
+        const uuidProperty = savedProperty.id;
+        res.redirect(`properties/addImage/${uuidProperty}`)
     }
     else{
         const [categories, prices] = await Promise.all([Category.findAll(), Price.findAll()])
@@ -65,10 +72,14 @@ const saveNewProperty = async (req, res) => {
             propertyData: {
                 title, description, category, priceRange, nRooms, nwc, parkingLot, street, lat, lng
             },
-    
         });
     
     }
 }
 
-export { formProperty, saveNewProperty }
+const addImage = (req, res) => {
+    console.log('Visualizar el form para agregar imgs');
+    res.render('properties/images')
+}
+
+export { formProperty, saveNewProperty, addImage }
